@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Panel de Administración — Pablo Barber</title>
+  <link rel="stylesheet" href="../assets/styles/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+</head>
+<body class="dashboard-body">
+
+  <!-- ============================================================
+       LOGIN OVERLAY — se muestra si el admin no está autenticado
+       ============================================================ -->
+  <div id="loginOverlay" style="
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  ">
+    <div style="
+      width: 100%;
+      max-width: 380px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem 2rem;
+    ">
+      <!-- Logo -->
+      <div style="text-align:center;margin-bottom:2rem;">
+        <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:var(--color-primary);">Pablo Barber</div>
+        <div style="font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--color-text-muted);margin-top:4px;">Panel de Administración</div>
+      </div>
+
+      <!-- Error message -->
+      <div id="loginError" style="
+        display: none;
+        background: rgba(224,96,96,0.08);
+        border: 1px solid rgba(224,96,96,0.3);
+        border-radius: var(--radius-sm);
+        padding: 0.75rem 1rem;
+        font-size: 0.82rem;
+        color: var(--color-error);
+        margin-bottom: 1.25rem;
+        text-align: center;
+      "></div>
+
+      <!-- Form -->
+      <div class="form-group">
+        <label class="form-label" for="login-email">Email</label>
+        <input
+          class="form-input"
+          type="email"
+          id="login-email"
+          placeholder="admin@pablobarber.com"
+          autocomplete="email"
+          autofocus>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="login-password">Contraseña</label>
+        <input
+          class="form-input"
+          type="password"
+          id="login-password"
+          placeholder="••••••••"
+          autocomplete="current-password">
+      </div>
+
+      <button
+        class="btn-primary"
+        id="loginBtn"
+        style="width:100%;justify-content:center;margin-top:0.5rem;"
+      >
+        <span id="loginBtnText">Ingresar</span>
+        <span id="loginBtnSpinner" style="display:none;"><span class="spinner"></span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       DASHBOARD HEADER
+       ============================================================ -->
+  <header class="dashboard-header" id="dashboardHeader">
+    <div class="container nav-inner">
+      <div class="nav-logo">
+        <span class="nav-logo-name">Pablo Barber</span>
+        <span class="nav-logo-tag">Panel de Administración</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:1rem;">
+        <div id="supabase-status" style="
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.72rem;
+          color: var(--color-text-muted);
+          padding: 4px 10px;
+          border: 1px solid var(--color-border-light);
+          border-radius: var(--radius-full);
+        ">
+          <span id="status-dot" style="width:7px;height:7px;border-radius:50%;background:var(--color-text-muted);display:inline-block;"></span>
+          <span id="status-text">Verificando...</span>
+        </div>
+        <a href="../index.html" class="btn-secondary" style="font-size:0.75rem; padding:0.45rem 1rem;">
+          ← Ver sitio
+        </a>
+        <button
+          id="logoutBtn"
+          class="btn-secondary"
+          style="font-size:0.75rem; padding:0.45rem 1rem; color:var(--color-error); border-color:rgba(224,96,96,0.3);">
+          Cerrar sesión
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       DASHBOARD LAYOUT
+       ============================================================ -->
+  <div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:1rem;padding:0 0.75rem;">Menú</p>
+
+      <nav>
+        <button class="dashboard-nav-item active" data-section="reservas" id="nav-reservas">
+          <span>📋</span> Reservas
+        </button>
+        <button class="dashboard-nav-item" data-section="semana" id="nav-semana">
+          <span>📅</span> Configurar Semana
+        </button>
+      </nav>
+
+      <!-- Week indicator -->
+      <div style="
+        margin-top: 2rem;
+        padding: 1rem;
+        background: var(--color-surface-2);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        font-size: 0.8rem;
+      ">
+        <p style="color:var(--color-text-muted);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">Semana en vista</p>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <button id="db-weekPrev" style="color:var(--color-text-muted);font-size:1rem;line-height:1;cursor:pointer;">‹</button>
+          <span id="db-weekLabel" style="color:var(--color-text-soft);font-size:0.78rem;text-align:center;flex:1"></span>
+          <button id="db-weekNext" style="color:var(--color-text-muted);font-size:1rem;line-height:1;cursor:pointer;">›</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="dashboard-main">
+
+      <!-- ── SECCIÓN: Reservas ── -->
+      <section class="dashboard-section active" id="section-reservas">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-xl);">
+          <div>
+            <h1 style="font-family:var(--font-display);font-size:1.8rem;font-weight:700;color:var(--color-text);">Reservas</h1>
+            <p style="font-size:0.85rem;color:var(--color-text-muted);margin-top:4px;">Gestión de citas de la semana</p>
+          </div>
+          <button class="btn-primary" id="refreshBtn" style="font-size:0.75rem;padding:0.6rem 1.2rem;">
+            ↻ Actualizar
+          </button>
+        </div>
+
+        <!-- Filter tabs -->
+        <div style="display:flex;gap:0.5rem;margin-bottom:var(--space-lg);flex-wrap:wrap;">
+          <button class="status-badge badge-pending filter-btn active" data-filter="todos" id="filter-todos">Todos</button>
+          <button class="status-badge" data-filter="pendiente" id="filter-pendiente" style="background:rgba(200,169,126,0.12);color:var(--color-primary);cursor:pointer">Pendientes</button>
+          <button class="status-badge" data-filter="completado" id="filter-completado" style="background:rgba(109,184,135,0.12);color:var(--color-success);cursor:pointer">Completados</button>
+          <button class="status-badge" data-filter="cancelado" id="filter-cancelado" style="background:rgba(224,96,96,0.12);color:var(--color-error);cursor:pointer">Cancelados</button>
+        </div>
+
+        <div class="dashboard-card" id="bookingsTableCard">
+          <h3>📋 Citas de la semana</h3>
+          <div id="bookingsTableWrapper">
+            <p style="font-size:0.875rem;color:var(--color-text-muted);padding:1rem 0;" id="bookingsMsg">
+              Cargando reservas...
+            </p>
+          </div>
+        </div>
+
+        <!-- Stats row -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;" id="statsRow">
+          <div class="dashboard-card" style="text-align:center;padding:1.2rem;">
+            <p style="font-size:2rem;font-family:var(--font-display);font-weight:700;color:var(--color-primary)" id="stat-total">—</p>
+            <p style="font-size:0.75rem;color:var(--color-text-muted);margin-top:4px">Total reservas</p>
+          </div>
+          <div class="dashboard-card" style="text-align:center;padding:1.2rem;">
+            <p style="font-size:2rem;font-family:var(--font-display);font-weight:700;color:var(--color-success)" id="stat-completados">—</p>
+            <p style="font-size:0.75rem;color:var(--color-text-muted);margin-top:4px">Completados</p>
+          </div>
+          <div class="dashboard-card" style="text-align:center;padding:1.2rem;">
+            <p style="font-size:2rem;font-family:var(--font-display);font-weight:700;color:var(--color-error)" id="stat-cancelados">—</p>
+            <p style="font-size:0.75rem;color:var(--color-text-muted);margin-top:4px">Cancelados</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECCIÓN: Configurar Semana ── -->
+      <section class="dashboard-section" id="section-semana">
+        <h1 style="font-family:var(--font-display);font-size:1.8rem;font-weight:700;color:var(--color-text);margin-bottom:0.5rem;">Configurar Semana</h1>
+        <p style="font-size:0.85rem;color:var(--color-text-muted);margin-bottom:var(--space-xl);">Activá o desactivá días de atención para la semana seleccionada.</p>
+
+        <div class="dashboard-card">
+          <h3>📅 Días de atención</h3>
+          <div>
+            <div class="day-config-row">
+              <div>
+                <p class="day-config-label">Viernes</p>
+                <p style="font-size:0.78rem;color:var(--color-text-muted)">10:00–12:00 · 13:00–19:00</p>
+              </div>
+              <label class="toggle-switch" title="Activar/desactivar Viernes">
+                <input type="checkbox" id="toggle-viernes" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="day-config-row">
+              <div>
+                <p class="day-config-label">Sábado</p>
+                <p style="font-size:0.78rem;color:var(--color-text-muted)">10:00–12:00 · 13:00–19:00</p>
+              </div>
+              <label class="toggle-switch" title="Activar/desactivar Sábado">
+                <input type="checkbox" id="toggle-sabado" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="day-config-row">
+              <div>
+                <p class="day-config-label">Domingo</p>
+                <p style="font-size:0.78rem;color:var(--color-text-muted)">10:00–12:00 · 13:00–19:00</p>
+              </div>
+              <label class="toggle-switch" title="Activar/desactivar Domingo">
+                <input type="checkbox" id="toggle-domingo" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bloquear slots individuales -->
+        <div class="dashboard-card">
+          <h3>🔒 Bloquear horarios específicos</h3>
+          <p style="font-size:0.85rem;color:var(--color-text-muted);margin-bottom:1rem;">
+            Marcá los turnos que no estarán disponibles esta semana.
+          </p>
+          <div id="blockSlotsGrid">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <button class="btn-primary" id="saveWeekConfigBtn" style="margin-top:0.5rem;">
+          <span id="saveConfigText">💾 Guardar configuración</span>
+          <span id="saveConfigSpinner" style="display:none;"><span class="spinner"></span></span>
+        </button>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+
+  <script type="module">
+    import {
+      fetchWeekBookings,
+      fetchWeekConfig,
+      updateBookingStatus,
+      saveWeekConfig,
+      signIn,
+      signOut,
+      getSession,
+      IS_CONFIGURED
+    } from '../assets/app/supabase.js';
+
+    // ── Utils ─────────────────────────────────────────────
+    const MONTH_NAMES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    const DAY_NAMES_FULL = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+    const SLOTS_ALL = ['10:00','11:00','13:00','14:00','15:00','16:00','17:00','18:00'];
+    const DAYS_MAP  = [
+      { label: 'Viernes', offset: 4 },
+      { label: 'Sábado',  offset: 5 },
+      { label: 'Domingo', offset: 6 }
+    ];
+
+    const SERVICE_LABELS = {
+      'corte':       'Corte',
+      'barba':       'Barba',
+      'cejas':       'Cejas',
+      'corte-barba': 'Corte + Barba',
+      'corte-cejas': 'Corte + Cejas',
+      'combo':       'Combo Completo',
+    };
+
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      toast.innerHTML = message;
+      toast.className = `toast toast-${type} show`;
+      setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    function getMondayOf(date) {
+      const d = new Date(date);
+      const day = d.getDay();
+      const diff = (day === 0) ? -6 : 1 - day;
+      d.setDate(d.getDate() + diff);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    }
+
+    function formatDate(date) {
+      return date.toISOString().split('T')[0];
+    }
+
+    function addDays(date, n) {
+      const d = new Date(date);
+      d.setDate(d.getDate() + n);
+      return d;
+    }
+
+    // ── State ─────────────────────────────────────────────
+    let weekOffset = 0;
+    let allBookings = [];
+    let activeFilter = 'todos';
+    let weekConfig = null;
+    let blockedSlots = [];
+
+    // ── Supabase status indicator ─────────────────────────
+    const statusDot  = document.getElementById('status-dot');
+    const statusText = document.getElementById('status-text');
+
+    if (IS_CONFIGURED) {
+      statusDot.style.background  = 'var(--color-success)';
+      statusText.textContent      = 'Conectado';
+      statusText.style.color      = 'var(--color-success)';
+    } else {
+      statusDot.style.background  = 'var(--color-primary-dark)';
+      statusText.textContent      = 'Modo demo';
+      statusText.style.color      = 'var(--color-text-muted)';
+    }
+
+    // ── Sidebar navigation ────────────────────────────────
+    document.querySelectorAll('[data-section]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.dashboard-nav-item').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
+
+        btn.classList.add('active');
+        document.getElementById('section-' + btn.dataset.section).classList.add('active');
+      });
+    });
+
+    // ── Week navigation ───────────────────────────────────
+    function getWeekRange() {
+      const today  = new Date();
+      const monday = getMondayOf(today);
+      monday.setDate(monday.getDate() + weekOffset * 7);
+      const friday = addDays(monday, 4);
+      const sunday = addDays(monday, 6);
+      return { monday, friday, sunday };
+    }
+
+    function updateWeekLabel() {
+      const { friday, sunday } = getWeekRange();
+      const label = `${friday.getDate()} – ${sunday.getDate()} ${MONTH_NAMES[sunday.getMonth()]} ${sunday.getFullYear()}`;
+      document.getElementById('db-weekLabel').textContent = label;
+      document.getElementById('db-weekPrev').style.opacity = weekOffset <= 0 ? '0.3' : '1';
+    }
+
+    document.getElementById('db-weekPrev').addEventListener('click', () => {
+      if (weekOffset > 0) { weekOffset--; updateWeekLabel(); loadData(); }
+    });
+
+    document.getElementById('db-weekNext').addEventListener('click', () => {
+      weekOffset++; updateWeekLabel(); loadData();
+    });
+
+    // ── Load data ─────────────────────────────────────────
+    async function loadData() {
+      const { monday, friday, sunday } = getWeekRange();
+      allBookings = await fetchWeekBookings(formatDate(friday), formatDate(sunday));
+      weekConfig  = await fetchWeekConfig(formatDate(monday));
+      blockedSlots = weekConfig?.slots_bloqueados ?? [];
+
+      renderBookingsTable();
+      renderStats();
+      renderWeekConfig();
+      renderBlockSlots();
+    }
+
+    // ── Bookings table ────────────────────────────────────
+    function renderBookingsTable() {
+      const wrapper = document.getElementById('bookingsTableWrapper');
+
+      const filtered = activeFilter === 'todos'
+        ? allBookings
+        : allBookings.filter(b => b.estado === activeFilter);
+
+      if (filtered.length === 0) {
+        wrapper.innerHTML = `<p style="font-size:0.875rem;color:var(--color-text-muted);padding:1.5rem 0">
+          ${IS_CONFIGURED ? 'No hay reservas para este período.' : '⚙️ Modo demo — conectá Supabase para ver reservas reales.'}
+        </p>`;
+        return;
+      }
+
+      const rows = filtered.map(b => {
+        const date = new Date(b.fecha + 'T12:00:00');
+        const dayLabel = `${DAY_NAMES_FULL[date.getDay()]} ${date.getDate()}/${date.getMonth()+1}`;
+        const serviceLabel = SERVICE_LABELS[b.servicio] ?? b.servicio;
+        const badgeClass = b.estado === 'completado' ? 'badge-done' : b.estado === 'cancelado' ? 'badge-cancelled' : 'badge-pending';
+
+        return `
+          <tr>
+            <td>${dayLabel}</td>
+            <td><strong style="color:var(--color-text)">${b.hora?.substring(0,5)}</strong></td>
+            <td>${b.nombre}</td>
+            <td style="font-size:0.78rem">${b.telefono}</td>
+            <td style="font-size:0.78rem">${serviceLabel}</td>
+            <td><span class="status-badge ${badgeClass}">${b.estado}</span></td>
+            <td>
+              <select
+                class="form-select"
+                style="padding:0.3rem 0.5rem;font-size:0.75rem;width:auto"
+                data-id="${b.id}"
+                onchange="handleStatusChange(this)"
+              >
+                <option value="pendiente"  ${b.estado==='pendiente'  ? 'selected':''}>Pendiente</option>
+                <option value="completado" ${b.estado==='completado' ? 'selected':''}>Completado</option>
+                <option value="cancelado"  ${b.estado==='cancelado'  ? 'selected':''}>Cancelado</option>
+              </select>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      wrapper.innerHTML = `
+        <div style="overflow-x:auto">
+          <table class="booking-table">
+            <thead>
+              <tr>
+                <th>Día</th>
+                <th>Hora</th>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Servicio</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    window.handleStatusChange = async function(select) {
+      const id     = select.dataset.id;
+      const estado = select.value;
+      const result = await updateBookingStatus(id, estado);
+      if (result.success) {
+        const booking = allBookings.find(b => b.id === id);
+        if (booking) booking.estado = estado;
+        renderBookingsTable();
+        renderStats();
+        showToast('✓ Estado actualizado', 'success');
+      } else {
+        showToast('Error al actualizar: ' + result.error, 'error');
+      }
+    };
+
+    // ── Stats ─────────────────────────────────────────────
+    function renderStats() {
+      document.getElementById('stat-total').textContent      = allBookings.length;
+      document.getElementById('stat-completados').textContent = allBookings.filter(b => b.estado === 'completado').length;
+      document.getElementById('stat-cancelados').textContent  = allBookings.filter(b => b.estado === 'cancelado').length;
+    }
+
+    // ── Filter buttons ────────────────────────────────────
+    document.querySelectorAll('[data-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-filter]').forEach(b => {
+          b.style.outline = '';
+        });
+        btn.style.outline = '2px solid var(--color-primary)';
+        activeFilter = btn.dataset.filter;
+        renderBookingsTable();
+      });
+    });
+
+    // Mark "Todos" as active initially
+    document.getElementById('filter-todos').style.outline = '2px solid var(--color-primary)';
+
+    // ── Week config ───────────────────────────────────────
+    function renderWeekConfig() {
+      if (!weekConfig) return;
+      document.getElementById('toggle-viernes').checked = weekConfig.viernes_activo;
+      document.getElementById('toggle-sabado').checked  = weekConfig.sabado_activo;
+      document.getElementById('toggle-domingo').checked = weekConfig.domingo_activo;
+    }
+
+    // ── Block slots ───────────────────────────────────────
+    function renderBlockSlots() {
+      const { monday } = getWeekRange();
+      const container  = document.getElementById('blockSlotsGrid');
+      let html = '';
+
+      DAYS_MAP.forEach(({ label, offset }) => {
+        const date    = addDays(monday, offset);
+        const dateStr = formatDate(date);
+        html += `
+          <div style="margin-bottom:1rem;">
+            <p style="font-size:0.78rem;font-weight:600;color:var(--color-text-muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${label} ${date.getDate()}/${date.getMonth()+1}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+              ${SLOTS_ALL.map(time => {
+                const key      = `${dateStr} ${time}`;
+                const isBlocked = blockedSlots.includes(key);
+                return `
+                  <button
+                    class="slot-btn${isBlocked ? ' occupied' : ''}"
+                    data-key="${key}"
+                    onclick="toggleBlockSlot(this)"
+                    style="min-width:60px"
+                  >${time}</button>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    window.toggleBlockSlot = function(btn) {
+      const key = btn.dataset.key;
+      if (blockedSlots.includes(key)) {
+        blockedSlots = blockedSlots.filter(k => k !== key);
+        btn.classList.remove('occupied');
+      } else {
+        blockedSlots.push(key);
+        btn.classList.add('occupied');
+      }
+    };
+
+    // ── Save config ───────────────────────────────────────
+    document.getElementById('saveWeekConfigBtn').addEventListener('click', async () => {
+      const btn     = document.getElementById('saveWeekConfigBtn');
+      const btnText = document.getElementById('saveConfigText');
+      const spinner = document.getElementById('saveConfigSpinner');
+
+      btn.disabled       = true;
+      btnText.style.display = 'none';
+      spinner.style.display = 'inline';
+
+      const { monday } = getWeekRange();
+
+      const config = {
+        semana_inicio:   formatDate(monday),
+        viernes_activo:  document.getElementById('toggle-viernes').checked,
+        sabado_activo:   document.getElementById('toggle-sabado').checked,
+        domingo_activo:  document.getElementById('toggle-domingo').checked,
+        slots_bloqueados: blockedSlots
+      };
+
+      const result = await saveWeekConfig(config);
+
+      btn.disabled       = false;
+      btnText.style.display = '';
+      spinner.style.display = 'none';
+
+      if (result.success) {
+        showToast('✓ Configuración guardada', 'success');
+      } else {
+        showToast('Error: ' + (result.error ?? 'Supabase no configurado'), 'error');
+      }
+    });
+
+    // Refresh button
+    document.getElementById('refreshBtn').addEventListener('click', loadData);
+
+    // ── Auth ──────────────────────────────────────────────
+    const loginOverlay  = document.getElementById('loginOverlay');
+    const loginBtn      = document.getElementById('loginBtn');
+    const loginBtnText  = document.getElementById('loginBtnText');
+    const loginSpinner  = document.getElementById('loginBtnSpinner');
+    const loginError    = document.getElementById('loginError');
+    const logoutBtn     = document.getElementById('logoutBtn');
+
+    function showLoginError(msg) {
+      loginError.textContent = msg;
+      loginError.style.display = 'block';
+    }
+
+    function hideLoginError() {
+      loginError.style.display = 'none';
+    }
+
+    // Login form submit (Enter key support)
+    document.getElementById('login-password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') loginBtn.click();
+    });
+    document.getElementById('login-email').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('login-password').focus();
+    });
+
+    loginBtn.addEventListener('click', async () => {
+      const email    = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      if (!email || !password) {
+        showLoginError('Completá email y contraseña.');
+        return;
+      }
+
+      hideLoginError();
+      loginBtn.disabled        = true;
+      loginBtnText.style.display = 'none';
+      loginSpinner.style.display = 'inline';
+
+      const result = await signIn(email, password);
+
+      loginBtn.disabled        = false;
+      loginBtnText.style.display = '';
+      loginSpinner.style.display = 'none';
+
+      if (result.success) {
+        loginOverlay.style.opacity    = '0';
+        loginOverlay.style.transition = 'opacity 0.4s ease';
+        setTimeout(() => loginOverlay.style.display = 'none', 400);
+        updateWeekLabel();
+        loadData();
+      } else {
+        // Humanizar el mensaje de error de Supabase
+        const msg = result.error?.toLowerCase() ?? '';
+        if (msg.includes('invalid') || msg.includes('credentials')) {
+          showLoginError('Email o contraseña incorrectos.');
+        } else if (msg.includes('configurado')) {
+          showLoginError('Supabase no está configurado. Revisá supabase.js.');
+        } else {
+          showLoginError('Error al iniciar sesión: ' + result.error);
+        }
+      }
+    });
+
+    logoutBtn.addEventListener('click', async () => {
+      await signOut();
+      loginOverlay.style.display  = 'flex';
+      loginOverlay.style.opacity  = '1';
+      document.getElementById('login-email').value    = '';
+      document.getElementById('login-password').value = '';
+      hideLoginError();
+    });
+
+    // ── Init: verificar sesión antes de mostrar el panel ──
+    async function initDashboard() {
+      const hasSession = await getSession();
+      if (hasSession) {
+        // Ya está logueado: ocultar login y cargar datos
+        loginOverlay.style.display = 'none';
+        updateWeekLabel();
+        loadData();
+      }
+      // Si no hay sesión, el overlay ya está visible (por defecto)
+    }
+
+    initDashboard();
+  </script>
+</body>
+</html>

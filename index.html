@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pablo Barber — Barbería moderna de precisión. Cortes, barba y cejas con el más alto nivel de calidad. Reserva tu cita online.">
+  <meta name="keywords" content="barbería, barbero, corte de pelo, arreglo de barba, cejas, Pablo Barber">
+  <meta property="og:title" content="Pablo Barber | Barbería Premium">
+  <meta property="og:description" content="Experiencia de barbería de lujo. Reserva tu cita online.">
+  <title>Pablo Barber | Barbería Premium</title>
+  <link rel="stylesheet" href="assets/styles/styles.css">
+  <!-- Inline favicon (scissors emoji) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✂️</text></svg>">
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <nav class="navbar" id="navbar" aria-label="Navegación principal">
+    <div class="container nav-inner">
+      <a href="#hero" class="nav-logo" aria-label="Pablo Barber - Inicio">
+        <span class="nav-logo-name">Pablo Barber</span>
+        <span class="nav-logo-tag">Barbería de Precisión</span>
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="#services" class="nav-link">Servicios</a></li>
+        <li><a href="#gallery" class="nav-link">Galería</a></li>
+        <li><a href="#about" class="nav-link">Nosotros</a></li>
+        <li><a href="#booking" class="nav-link">Reservas</a></li>
+        <li><a href="#contact" class="nav-link">Contacto</a></li>
+        <li><a href="#booking" class="nav-cta" id="nav-cta-btn">Reservar Cita</a></li>
+      </ul>
+
+      <button class="nav-hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="nav-mobile" id="mobileMenu" role="dialog" aria-label="Menú móvil">
+    <a href="#services" class="nav-link" data-mobile-link>Servicios</a>
+    <a href="#gallery" class="nav-link" data-mobile-link>Galería</a>
+    <a href="#about" class="nav-link" data-mobile-link>Nosotros</a>
+    <a href="#booking" class="nav-link" data-mobile-link>Reservas</a>
+    <a href="#contact" class="nav-link" data-mobile-link>Contacto</a>
+    <a href="#booking" class="nav-cta" data-mobile-link>Reservar Cita</a>
+  </div>
+
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section id="hero" aria-label="Hero - Bienvenida">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-line"></span>
+          <span class="hero-eyebrow-text">Barbería de Precisión</span>
+        </div>
+
+        <h1 class="hero-title">
+          El arte del<br>
+          <span>buen corte.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Donde la tradición barbera se encuentra con la estética moderna. Cada visita, una experiencia única.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#booking" class="btn-primary" id="hero-cta-btn">
+            <span>✦</span> Reservar Cita
+          </a>
+          <a href="#services" class="btn-secondary">Ver Servicios</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll" aria-hidden="true">
+      <span class="hero-scroll-text">Scroll</span>
+      <div class="hero-scroll-line"></div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SERVICES
+       ============================================================ -->
+  <section id="services" aria-label="Nuestros servicios">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">Lo que hacemos</p>
+        <h2 class="section-title">Nuestros Servicios</h2>
+        <div class="divider"></div>
+        <p class="section-subtitle">
+          Cada servicio es ejecutado con precisión milimétrica y los mejores productos del mercado.
+        </p>
+      </div>
+
+      <div class="services-grid stagger" id="servicesGrid">
+        <!-- Corte -->
+        <article class="service-card" id="service-corte">
+          <div class="service-icon" aria-hidden="true">✂️</div>
+          <h3 class="service-name">Corte de Cabello</h3>
+          <p class="service-desc">
+            Desde clásicos atemporales hasta estilos contemporáneos. Analizamos tu tipo de cabello y estructura facial para el corte perfecto.
+          </p>
+          <div class="service-price">$15 <span>/ sesión</span></div>
+        </article>
+
+        <!-- Barba -->
+        <article class="service-card" id="service-barba">
+          <div class="service-icon" aria-hidden="true">🪒</div>
+          <h3 class="service-name">Arreglo de Barba</h3>
+          <p class="service-desc">
+            Perfilado, delineado y afeitado clásico con toalla caliente. La barba como sello de tu personalidad.
+          </p>
+          <div class="service-price">$10 <span>/ sesión</span></div>
+        </article>
+
+        <!-- Cejas -->
+        <article class="service-card" id="service-cejas">
+          <div class="service-icon" aria-hidden="true">👁️</div>
+          <h3 class="service-name">Depilación de Cejas</h3>
+          <p class="service-desc">
+            Arco perfecto y limpieza precisa de cejas para un look impecable. Complemento ideal para cualquier servicio.
+          </p>
+          <div class="service-price">$5 <span>/ sesión</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       GALLERY
+       ============================================================ -->
+  <section id="gallery" aria-label="Galería de trabajos">
+    <div class="container">
+      <div class="gallery-header reveal">
+        <div>
+          <p class="section-label">Nuestro trabajo</p>
+          <h2 class="section-title">Galería</h2>
+          <div class="divider"></div>
+        </div>
+        <p class="section-subtitle" style="text-align:right; max-width: 320px;">
+          Cada corte cuenta una historia. Aquí contamos la nuestra.
+        </p>
+      </div>
+
+      <div class="gallery-grid" id="galleryGrid">
+        <div class="gallery-item">
+          <img
+            src="./assets/images/galeria1.jpeg"
+            alt="Corte clásico con fade"
+            loading="lazy">
+          <div class="gallery-item-overlay"></div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assets/images/galeria2.jpeg"
+            alt="Arreglo de barba con navaja"
+            loading="lazy">
+          <div class="gallery-item-overlay"></div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assets/images/galeria3.jpeg"
+            alt="Barbería clásica moderna"
+            loading="lazy">
+          <div class="gallery-item-overlay"></div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assets/images/galeria4.jpeg"
+            alt="Corte moderno con degradé"
+            loading="lazy">
+          <div class="gallery-item-overlay"></div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assets/images/pablo.png"
+            alt="Afeitado clásico con brocha"
+            loading="lazy">
+          <div class="gallery-item-overlay"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       ABOUT
+       ============================================================ -->
+  <section id="about" aria-label="Sobre nosotros">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-visual reveal reveal-left">
+          <div class="about-image-frame">
+            <img
+              class="about-img"
+              src="./assets/images/pablo.png"
+              alt="Pablo, maestro barbero"
+              loading="lazy">
+            <div class="about-accent-card">
+              <div class="about-accent-number">10+</div>
+              <div class="about-accent-text">Años de experiencia</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-content reveal reveal-right">
+          <p class="section-label">Nuestra historia</p>
+          <h2 class="section-title">Tradición con<br>visión moderna.</h2>
+          <div class="divider"></div>
+          <p class="section-subtitle">
+            Pablo Barber nació de la pasión por el arte del corte clásico, combinada con la estética contemporánea. Cada cliente es tratado como único, porque cada cabeza lo es.
+          </p>
+
+          <div class="about-features">
+            <div class="about-feature">
+              <div class="about-feature-dot"></div>
+              <p>Productos premium de alta gama para el cuidado del cabello y la barba.</p>
+            </div>
+            <div class="about-feature">
+              <div class="about-feature-dot"></div>
+              <p>Atención personalizada y sin apuros. Tu tiempo es nuestro tiempo.</p>
+            </div>
+            <div class="about-feature">
+              <div class="about-feature-dot"></div>
+              <p>Ambiente acogedor, sin lujos innecesarios pero con el estilo que mereces.</p>
+            </div>
+          </div>
+
+          <div style="margin-top: var(--space-xl);">
+            <a href="#booking" class="btn-primary">Agendar mi cita</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       BOOKING
+       ============================================================ -->
+  <section id="booking" aria-label="Reservar cita">
+    <div class="container">
+      <div class="reveal" style="text-align: center; max-width: 560px; margin: 0 auto var(--space-3xl);">
+        <p class="section-label">Agenda online</p>
+        <h2 class="section-title">Reserva tu Cita</h2>
+        <div class="divider" style="margin-inline: auto;"></div>
+        <p class="section-subtitle" style="margin-inline: auto;">
+          Atendemos viernes, sábados y domingos. Seleccioná tu día y horario preferido.
+        </p>
+      </div>
+
+      <div class="booking-layout">
+        <!-- Info sidebar -->
+        <div class="booking-info reveal reveal-left">
+          <p class="section-label">Horarios de atención</p>
+          <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: var(--space-lg);">
+            Fin de semana para vos.
+          </h3>
+          <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.7; margin-bottom: var(--space-xl);">
+            Nos tomamos el tiempo para cada cliente. Por eso trabajamos con turnos de 1 hora y solo los días que podemos darte todo nuestro talento.
+          </p>
+
+          <div class="booking-hours">
+            <p class="booking-hours-title">Días y horarios</p>
+            <ul class="booking-hours-list">
+              <li class="booking-hours-item">
+                <strong>Viernes</strong>
+                <span>10:00 – 12:00 · 13:00 – 19:00</span>
+              </li>
+              <li class="booking-hours-item">
+                <strong>Sábado</strong>
+                <span>10:00 – 12:00 · 13:00 – 19:00</span>
+              </li>
+              <li class="booking-hours-item">
+                <strong>Domingo</strong>
+                <span>10:00 – 12:00 · 13:00 – 19:00</span>
+              </li>
+            </ul>
+          </div>
+
+          <div id="supabase-status-banner" style="
+            margin-top: var(--space-lg);
+            padding: var(--space-md);
+            background: rgba(200,169,126,0.05);
+            border: 1px dashed rgba(200,169,126,0.25);
+            border-radius: var(--radius-sm);
+            font-size: 0.78rem;
+            color: var(--color-text-muted);
+            line-height: 1.6;
+          ">
+            ⚙️ <strong style="color: var(--color-primary-dark);">Modo demo</strong> — Los datos no se guardan. Conectá Supabase en <code>assets/app/supabase.js</code> para activar el sistema real.
+          </div>
+        </div>
+
+        <!-- Booking form card -->
+        <div class="booking-form-card reveal reveal-right" id="bookingFormCard">
+          <!-- Progress -->
+          <div class="booking-progress" id="bookingProgress" aria-label="Progreso de reserva">
+            <div class="progress-dot active" id="pdot-1"></div>
+            <div class="progress-dot" id="pdot-2"></div>
+            <div class="progress-dot" id="pdot-3"></div>
+          </div>
+
+          <!-- STEP 1: Date & Time -->
+          <div class="booking-step active" id="step-1">
+            <h3 class="booking-step-title">
+              <span class="booking-step-num">1</span>
+              Elegí día y horario
+            </h3>
+
+            <!-- Week navigation -->
+            <div class="week-nav">
+              <button class="week-nav-btn" id="weekPrev" aria-label="Semana anterior" disabled>&#8592;</button>
+              <span class="week-label" id="weekLabel">Semana actual</span>
+              <button class="week-nav-btn" id="weekNext" aria-label="Próxima semana">&#8594;</button>
+            </div>
+
+            <!-- Day selector -->
+            <div class="day-selector" id="daySelector" role="group" aria-label="Seleccioná el día">
+              <!-- Rendered by JS -->
+            </div>
+
+            <!-- Slots -->
+            <div id="slotsContainer" aria-live="polite" aria-atomic="true">
+              <p style="font-size: 0.85rem; color: var(--color-text-muted); text-align: center; padding: var(--space-xl) 0;">
+                Seleccioná un día para ver los horarios disponibles.
+              </p>
+            </div>
+
+            <div class="step-nav">
+              <span></span>
+              <button class="btn-primary" id="step1Next" disabled>
+                Continuar &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 2: Personal Info -->
+          <div class="booking-step" id="step-2">
+            <h3 class="booking-step-title">
+              <span class="booking-step-num">2</span>
+              Tus datos
+            </h3>
+
+            <form id="bookingForm" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="booking-name">Nombre completo *</label>
+                <input
+                  class="form-input"
+                  type="text"
+                  id="booking-name"
+                  name="name"
+                  placeholder="Ej: Carlos Rodríguez"
+                  required
+                  autocomplete="name">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="booking-phone">WhatsApp / Teléfono *</label>
+                <input
+                  class="form-input"
+                  type="tel"
+                  id="booking-phone"
+                  name="phone"
+                  placeholder="Ej: +595 971 000000"
+                  required
+                  autocomplete="tel">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="booking-service">Servicio *</label>
+                <select class="form-select" id="booking-service" name="service" required>
+                  <option value="" disabled selected>Seleccioná un servicio</option>
+                  <option value="corte">Corte de Cabello — $15</option>
+                  <option value="barba">Arreglo de Barba — $10</option>
+                  <option value="cejas">Depilación de Cejas — $5</option>
+                  <option value="corte-barba">Corte + Barba — $22</option>
+                  <option value="corte-cejas">Corte + Cejas — $18</option>
+                  <option value="combo">Combo Completo (Corte + Barba + Cejas) — $27</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="booking-notes">Notas adicionales</label>
+                <input
+                  class="form-input"
+                  type="text"
+                  id="booking-notes"
+                  name="notes"
+                  placeholder="Ej: quiero el flequillo más largo...">
+              </div>
+            </form>
+
+            <div class="step-nav">
+              <button class="btn-secondary" id="step2Back">&larr; Atrás</button>
+              <button class="btn-primary" id="step2Next">Revisar &rarr;</button>
+            </div>
+          </div>
+
+          <!-- STEP 3: Confirm -->
+          <div class="booking-step" id="step-3">
+            <h3 class="booking-step-title">
+              <span class="booking-step-num">3</span>
+              Confirmá tu reserva
+            </h3>
+
+            <div class="booking-summary" id="bookingSummary">
+              <p class="booking-summary-title">Resumen de tu cita</p>
+              <div class="booking-summary-row">
+                <span>Día</span>
+                <strong id="summary-day">—</strong>
+              </div>
+              <div class="booking-summary-row">
+                <span>Hora</span>
+                <strong id="summary-time">—</strong>
+              </div>
+              <div class="booking-summary-row">
+                <span>Servicio</span>
+                <strong id="summary-service">—</strong>
+              </div>
+              <div class="booking-summary-row">
+                <span>Nombre</span>
+                <strong id="summary-name">—</strong>
+              </div>
+              <div class="booking-summary-row">
+                <span>Teléfono</span>
+                <strong id="summary-phone">—</strong>
+              </div>
+            </div>
+
+            <div class="step-nav">
+              <button class="btn-secondary" id="step3Back">&larr; Atrás</button>
+              <button class="btn-primary" id="confirmBookingBtn">
+                <span id="confirmBtnText">✦ Confirmar Cita</span>
+                <span id="confirmBtnSpinner" style="display:none;"><span class="spinner"></span></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- SUCCESS -->
+          <div class="booking-step" id="step-success">
+            <div class="booking-success">
+              <div class="success-icon">✓</div>
+              <h3>¡Cita reservada!</h3>
+              <p id="successMessage">Te esperamos el <strong id="success-day"></strong> a las <strong id="success-time"></strong>.</p>
+              <br>
+              <button class="btn-secondary" id="newBookingBtn" style="margin: 0 auto;">
+                Hacer otra reserva
+              </button>
+            </div>
+          </div>
+
+        </div><!-- /booking-form-card -->
+      </div><!-- /booking-layout -->
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       CONTACT
+       ============================================================ -->
+  <section id="contact" aria-label="Contacto y ubicación">
+    <div class="container">
+      <div class="reveal" style="margin-bottom: var(--space-2xl);">
+        <p class="section-label">Encontranos</p>
+        <h2 class="section-title">Contacto</h2>
+        <div class="divider"></div>
+      </div>
+
+      <div class="contact-grid">
+        <div class="reveal reveal-left">
+          <div class="contact-info-item">
+            <div class="contact-info-icon">📍</div>
+            <div>
+              <p class="contact-info-title">Dirección</p>
+              <p class="contact-info-value">HCXV+57C, San Antonio 111307</p>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">📱</div>
+            <div>
+              <p class="contact-info-title">WhatsApp</p>
+              <p class="contact-info-value">
+                <a href="https://wa.me/595982844883" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); transition: opacity 0.2s;" onmouseenter="this.style.opacity='0.75'" onmouseleave="this.style.opacity='1'">
+                  +595 982 844 883
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">🕐</div>
+            <div>
+              <p class="contact-info-title">Horario</p>
+              <p class="contact-info-value">Lun – Jue: 10:00 a 19:00 h | Vie – Dom: A Reservas</p>
+            </div>
+          </div>
+
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Instagram" title="Instagram">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Facebook" title="Facebook">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="#" class="social-link" aria-label="TikTok" title="TikTok">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="reveal reveal-right">
+          <div class="map-placeholder">
+            <!-- Replace src with your real Google Maps embed URL -->
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3604.0885078237648!2d-57.55996946789714!3d-25.401847768571812!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x945dab0008f5c6f9%3A0x830651b398122121!2sBarber%C3%ADa%20PabloBarber!5e0!3m2!1ses!2spy!4v1784482562806!5m2!1ses!2spy"
+              title="Ubicación Pablo Barber"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer bottom -->
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 <a href="https://novinho.online/" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); transition: opacity 0.2s;" onmouseenter="this.style.opacity='0.75'" onmouseleave="this.style.opacity='1'">NovinhoDev</a>. Todos los derechos reservados.</p>
+        <nav class="footer-links" aria-label="Links del footer">
+          <a href="admin/">Panel de Administración</a>
+          <a href="#booking">Reservar cita</a>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="assets/app/supabase.js"></script>
+  <script type="module" src="assets/app/app.js"></script>
+</body>
+</html>
